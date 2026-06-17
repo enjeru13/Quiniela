@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ios-bg: #000000;
+  --color-ios-card: #1c1c1e;
+  --color-ios-card2: #2c2c2e;
+  --color-ios-border: #3a3a3c;
+  --color-ios-green: #30d158;
+  --color-ios-blue: #0a84ff;
+  --color-ios-red: #ff453a;
+  --color-ios-orange: #ff9f0a;
+  --color-ios-label2: #98989d;
+  --color-ios-label3: #636366;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif;
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.live-pulse {
+  animation: livePulse 1.5s ease-in-out infinite;
+}

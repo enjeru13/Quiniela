@@ -1,0 +1,153 @@
+export const matches = [
+  {
+    id: 1,
+    home_team: { name: 'España', short: 'ESP', flag_code: 'es' },
+    away_team: { name: 'Croacia', short: 'CRO', flag_code: 'hr' },
+    home_score: 2,
+    away_score: 1,
+    status: 'finished',
+    kickoff_at: '2026-06-17T11:00:00',
+    stage: 'Grupo B',
+    minute: null,
+  },
+  {
+    id: 2,
+    home_team: { name: 'Argentina', short: 'ARG', flag_code: 'ar' },
+    away_team: { name: 'Chile', short: 'CHI', flag_code: 'cl' },
+    home_score: 3,
+    away_score: 0,
+    status: 'finished',
+    kickoff_at: '2026-06-17T11:00:00',
+    stage: 'Grupo A',
+    minute: null,
+  },
+  {
+    id: 3,
+    home_team: { name: 'Brasil', short: 'BRA', flag_code: 'br' },
+    away_team: { name: 'México', short: 'MEX', flag_code: 'mx' },
+    home_score: 1,
+    away_score: 1,
+    status: 'live',
+    kickoff_at: '2026-06-17T14:00:00',
+    stage: 'Grupo D',
+    minute: 67,
+  },
+  {
+    id: 4,
+    home_team: { name: 'Francia', short: 'FRA', flag_code: 'fr' },
+    away_team: { name: 'USA', short: 'USA', flag_code: 'us' },
+    home_score: null,
+    away_score: null,
+    status: 'scheduled',
+    kickoff_at: '2026-06-17T17:00:00',
+    stage: 'Grupo C',
+    minute: null,
+  },
+  {
+    id: 5,
+    home_team: { name: 'Alemania', short: 'GER', flag_code: 'de' },
+    away_team: { name: 'Portugal', short: 'POR', flag_code: 'pt' },
+    home_score: null,
+    away_score: null,
+    status: 'scheduled',
+    kickoff_at: '2026-06-17T17:00:00',
+    stage: 'Grupo E',
+    minute: null,
+  },
+  {
+    id: 6,
+    home_team: { name: 'Inglaterra', short: 'ENG', flag_code: 'gb-eng' },
+    away_team: { name: 'Irán', short: 'IRN', flag_code: 'ir' },
+    home_score: null,
+    away_score: null,
+    status: 'scheduled',
+    kickoff_at: '2026-06-17T20:00:00',
+    stage: 'Grupo F',
+    minute: null,
+  },
+  {
+    id: 7,
+    home_team: { name: 'Países Bajos', short: 'NED', flag_code: 'nl' },
+    away_team: { name: 'Senegal', short: 'SEN', flag_code: 'sn' },
+    home_score: null,
+    away_score: null,
+    status: 'scheduled',
+    kickoff_at: '2026-06-17T20:00:00',
+    stage: 'Grupo G',
+    minute: null,
+  },
+]
+
+export const mockPredictions = {
+  1: { pred_home: 2, pred_away: 0, points_earned: 1 },
+  3: { pred_home: 2, pred_away: 1, points_earned: null },
+  4: { pred_home: 1, pred_away: 1, points_earned: null },
+}
+
+export const groups = [
+  {
+    name: 'Grupo A',
+    teams: [
+      { name: 'Argentina', short: 'ARG', flag_code: 'ar', pj: 2, g: 2, e: 0, p: 0, gf: 5, gc: 1, pts: 6 },
+      { name: 'Canadá', short: 'CAN', flag_code: 'ca', pj: 2, g: 1, e: 0, p: 1, gf: 2, gc: 3, pts: 3 },
+      { name: 'Chile', short: 'CHI', flag_code: 'cl', pj: 2, g: 0, e: 1, p: 1, gf: 1, gc: 3, pts: 1 },
+      { name: 'Perú', short: 'PER', flag_code: 'pe', pj: 2, g: 0, e: 0, p: 2, gf: 0, gc: 4, pts: 0 },
+    ],
+  },
+  {
+    name: 'Grupo B',
+    teams: [
+      { name: 'España', short: 'ESP', flag_code: 'es', pj: 2, g: 2, e: 0, p: 0, gf: 4, gc: 1, pts: 6 },
+      { name: 'Croacia', short: 'CRO', flag_code: 'hr', pj: 2, g: 1, e: 0, p: 1, gf: 3, gc: 2, pts: 3 },
+      { name: 'Marruecos', short: 'MAR', flag_code: 'ma', pj: 2, g: 0, e: 1, p: 1, gf: 1, gc: 3, pts: 1 },
+      { name: 'Uzbekistán', short: 'UZB', flag_code: 'uz', pj: 2, g: 0, e: 0, p: 2, gf: 0, gc: 4, pts: 0 },
+    ],
+  },
+  {
+    name: 'Grupo C',
+    teams: [
+      { name: 'Francia', short: 'FRA', flag_code: 'fr', pj: 1, g: 1, e: 0, p: 0, gf: 2, gc: 0, pts: 3 },
+      { name: 'USA', short: 'USA', flag_code: 'us', pj: 1, g: 0, e: 1, p: 0, gf: 1, gc: 1, pts: 1 },
+      { name: 'Uruguay', short: 'URU', flag_code: 'uy', pj: 1, g: 0, e: 1, p: 0, gf: 1, gc: 1, pts: 1 },
+      { name: 'Panamá', short: 'PAN', flag_code: 'pa', pj: 1, g: 0, e: 0, p: 1, gf: 0, gc: 2, pts: 0 },
+    ],
+  },
+  {
+    name: 'Grupo D',
+    teams: [
+      { name: 'Serbia', short: 'SRB', flag_code: 'rs', pj: 1, g: 1, e: 0, p: 0, gf: 3, gc: 0, pts: 3 },
+      { name: 'Brasil', short: 'BRA', flag_code: 'br', pj: 1, g: 0, e: 1, p: 0, gf: 1, gc: 1, pts: 1 },
+      { name: 'México', short: 'MEX', flag_code: 'mx', pj: 1, g: 0, e: 1, p: 0, gf: 1, gc: 1, pts: 1 },
+      { name: 'Bolivia', short: 'BOL', flag_code: 'bo', pj: 1, g: 0, e: 0, p: 1, gf: 0, gc: 3, pts: 0 },
+    ],
+  },
+  {
+    name: 'Grupo E',
+    teams: [
+      { name: 'Alemania', short: 'GER', flag_code: 'de', pj: 1, g: 1, e: 0, p: 0, gf: 2, gc: 0, pts: 3 },
+      { name: 'Portugal', short: 'POR', flag_code: 'pt', pj: 1, g: 0, e: 1, p: 0, gf: 1, gc: 1, pts: 1 },
+      { name: 'Escocia', short: 'SCO', flag_code: 'gb-sct', pj: 1, g: 0, e: 1, p: 0, gf: 1, gc: 1, pts: 1 },
+      { name: 'Guinea', short: 'GUI', flag_code: 'gn', pj: 1, g: 0, e: 0, p: 1, gf: 0, gc: 2, pts: 0 },
+    ],
+  },
+  {
+    name: 'Grupo F',
+    teams: [
+      { name: 'Inglaterra', short: 'ENG', flag_code: 'gb-eng', pj: 1, g: 1, e: 0, p: 0, gf: 3, gc: 0, pts: 3 },
+      { name: 'Colombia', short: 'COL', flag_code: 'co', pj: 1, g: 1, e: 0, p: 0, gf: 2, gc: 1, pts: 3 },
+      { name: 'Irán', short: 'IRN', flag_code: 'ir', pj: 1, g: 0, e: 0, p: 1, gf: 0, gc: 3, pts: 0 },
+      { name: 'Camerún', short: 'CMR', flag_code: 'cm', pj: 1, g: 0, e: 0, p: 1, gf: 1, gc: 2, pts: 0 },
+    ],
+  },
+]
+
+export const leaderboard = [
+  { rank: 1, username: 'CarlosM', total_points: 42, predictions: 14, exact: 5 },
+  { rank: 2, username: 'AnaR', total_points: 38, predictions: 14, exact: 4 },
+  { rank: 3, username: 'LuisP', total_points: 35, predictions: 13, exact: 3 },
+  { rank: 4, username: 'MariaS', total_points: 31, predictions: 14, exact: 2 },
+  { rank: 5, username: 'Tú', total_points: 28, predictions: 12, exact: 3, isMe: true },
+  { rank: 6, username: 'JorgeV', total_points: 25, predictions: 11, exact: 2 },
+  { rank: 7, username: 'SofiaG', total_points: 22, predictions: 13, exact: 1 },
+  { rank: 8, username: 'AndresL', total_points: 18, predictions: 10, exact: 1 },
+]

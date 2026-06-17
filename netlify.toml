@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[functions]
+  directory = "netlify/functions"
+
+# Proxy football-data.org — adds API key server-side
+[[redirects]]
+  from = "/api/fd/*"
+  to = "/.netlify/functions/football-proxy"
+  status = 200
+
+# SPA fallback — todas las rutas van a index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
