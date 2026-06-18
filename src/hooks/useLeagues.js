@@ -106,5 +106,30 @@ export function useLeagues() {
     await fetchLeagues();
   };
 
-  return { leagues, loading, createLeague, joinLeague, getLeagueRanking, leaveLeague, deleteLeague, refetch: fetchLeagues };
+  const getLeaguePredictions = async (leagueId) => {
+    const { data: members } = await supabase
+      .from("league_members")
+      .select("profile:profiles(id, username)")
+      .eq("league_id", leagueId);
+
+    if (!members) return { members: [], predsByMatch: {} };
+
+    const profiles = members.map((m) => m.profile).filter(Boolean);
+    const userIds = profiles.map((p) => p.id);
+
+    const { data: preds } = await supabase
+      .from("predictions")
+      .select("user_id, api_match_id, pred_home, pred_away, points_earned")
+      .in("user_id", userIds);
+
+    const predsByMatch = {};
+    (preds ?? []).forEach((p) => {
+      if (!predsByMatch[p.api_match_id]) predsByMatch[p.api_match_id] = {};
+      predsByMatch[p.api_match_id][p.user_id] = p;
+    });
+
+    return { members: profiles, predsByMatch };
+  };
+
+  return { leagues, loading, createLeague, joinLeague, getLeagueRanking, getLeaguePredictions, leaveLeague, deleteLeague, refetch: fetchLeagues };
 }
