@@ -78,6 +78,25 @@ as
   group by p.id, p.username, p.avatar_url;
 
 -- ============================================================
+-- LIGAS PRIVADAS
+-- ============================================================
+
+create table if not exists leagues (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,
+  code        text unique not null,
+  created_by  uuid references profiles(id) on delete cascade not null,
+  created_at  timestamptz default now()
+);
+
+create table if not exists league_members (
+  league_id   uuid references leagues(id) on delete cascade not null,
+  user_id     uuid references profiles(id) on delete cascade not null,
+  joined_at   timestamptz default now(),
+  primary key (league_id, user_id)
+);
+
+-- ============================================================
 -- RLS
 -- ============================================================
 
@@ -100,4 +119,24 @@ create policy "predictions_own_update" on predictions
   for update using (auth.uid() = user_id);
 
 create policy "predictions_own_delete" on predictions
+  for delete using (auth.uid() = user_id);
+
+-- Leagues RLS
+alter table leagues       enable row level security;
+alter table league_members enable row level security;
+
+-- Leagues: lectura pública (para join por código), insert/delete propio
+create policy "leagues_public_read"  on leagues for select using (true);
+create policy "leagues_own_insert"   on leagues for insert with check (auth.uid() = created_by);
+create policy "leagues_own_delete"   on leagues for delete using (auth.uid() = created_by);
+
+-- League members: lectura si eres miembro de esa liga, insert/delete propio
+create policy "league_members_read" on league_members
+  for select using (
+    auth.uid() = user_id or
+    exists (select 1 from league_members lm where lm.league_id = league_members.league_id and lm.user_id = auth.uid())
+  );
+create policy "league_members_insert" on league_members
+  for insert with check (auth.uid() = user_id);
+create policy "league_members_delete" on league_members
   for delete using (auth.uid() = user_id);

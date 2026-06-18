@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import Groups from './pages/Groups'
 import Knockout from './pages/Knockout'
 import Rankings from './pages/Rankings'
+import Leagues from './pages/Leagues'
+import JoinLeague from './pages/JoinLeague'
 import UpdatePrompt from './components/UpdatePrompt'
 
 function LoadingScreen() {
@@ -24,6 +26,16 @@ function AppRoutes() {
   const { user, loading } = useAuth()
 
   if (loading) return <LoadingScreen />
+
+  // Join route — works with or without auth (JoinLeague handles noauth state)
+  if (window.location.pathname.startsWith('/unirse')) {
+    return (
+      <Routes>
+        <Route path="/unirse/:code" element={<JoinLeague />} />
+      </Routes>
+    )
+  }
+
   if (!user) return <Auth />
 
   return (
@@ -33,6 +45,8 @@ function AppRoutes() {
         <Route path="/grupos" element={<Groups />} />
         <Route path="/eliminatorias" element={<Knockout />} />
         <Route path="/ranking" element={<Rankings />} />
+        <Route path="/ligas" element={<Leagues />} />
+        <Route path="/unirse/:code" element={<JoinLeague />} />
       </Routes>
     </Layout>
   )

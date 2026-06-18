@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom'
-import { Home, LayoutGrid, Trophy, BarChart2 } from 'lucide-react'
+import { Home, LayoutGrid, Trophy, BarChart2, Users } from 'lucide-react'
 
 const navItems = [
   { path: '/', label: 'Partidos', icon: Home },
   { path: '/grupos', label: 'Grupos', icon: LayoutGrid },
   { path: '/eliminatorias', label: 'KO', icon: Trophy },
   { path: '/ranking', label: 'Ranking', icon: BarChart2 },
+  { path: '/ligas', label: 'Ligas', icon: Users },
 ]
 
 export default function BottomNav() {
@@ -18,7 +19,7 @@ export default function BottomNav() {
             to={path}
             end={path === '/'}
             className={({ isActive }) =>
-              `flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl transition-all ${
+              `flex flex-col items-center gap-1 px-2 py-1.5 rounded-xl transition-all ${
                 isActive ? 'text-ios-orange' : 'text-ios-label3'
               }`
             }

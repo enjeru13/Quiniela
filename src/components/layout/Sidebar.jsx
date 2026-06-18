@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Home, LayoutGrid, Trophy, BarChart2, LogOut } from 'lucide-react'
+import { Home, LayoutGrid, Trophy, BarChart2, LogOut, Users } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { useMatches } from '../../contexts/MatchesContext'
 
@@ -8,6 +8,7 @@ const navItems = [
   { path: '/grupos', label: 'Grupos', icon: LayoutGrid },
   { path: '/eliminatorias', label: 'Eliminatorias', icon: Trophy },
   { path: '/ranking', label: 'Ranking', icon: BarChart2 },
+  { path: '/ligas', label: 'Ligas', icon: Users },
 ]
 
 function Avatar({ username = '?', size = 32 }) {
