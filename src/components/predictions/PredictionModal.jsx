@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus } from 'lucide-react'
 import TeamFlag from '../matches/TeamFlag'
-import { formatTime } from '../../lib/utils'
+import { formatTime, formatDate } from '../../lib/utils'
 
 function ScoreInput({ value, onChange, teamName }) {
   return (
@@ -136,7 +136,7 @@ export default function PredictionModal({ match, prediction, onSave, onClose }) 
                 {match.stage}
               </p>
               <p className="text-xs font-semibold text-ios-label2 mt-0.5">
-                {formatTime(match.kickoff_at)} · Hoy
+                {formatDate(match.kickoff_at)} · {formatTime(match.kickoff_at)}
               </p>
             </div>
             <button

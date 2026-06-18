@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Groups from './pages/Groups'
 import Knockout from './pages/Knockout'
 import Rankings from './pages/Rankings'
+import UpdatePrompt from './components/UpdatePrompt'
 
 function LoadingScreen() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
       <AuthProvider>
         <MatchesProvider>
           <AppRoutes />
+          <UpdatePrompt />
         </MatchesProvider>
       </AuthProvider>
     </BrowserRouter>

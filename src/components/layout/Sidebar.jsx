@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { Home, LayoutGrid, Trophy, BarChart2, LogOut } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { useMatches } from '../../contexts/MatchesContext'
 
 const navItems = [
   { path: '/', label: 'Partidos', icon: Home },
@@ -35,6 +36,8 @@ function Avatar({ username = '?', size = 32 }) {
 
 export default function Sidebar() {
   const { profile, signOut } = useAuth()
+  const { matches } = useMatches()
+  const liveCount = matches.filter((m) => m.status === 'live').length
 
   return (
     <aside
@@ -65,18 +68,20 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Live indicator */}
-      <div className="px-5 mb-3">
-        <div
-          className="flex items-center gap-2 px-3 py-2 rounded-xl"
-          style={{ background: 'rgba(255,69,58,0.08)', border: '1px solid rgba(255,69,58,0.15)' }}
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-ios-red live-pulse" />
-          <span className="text-[10px] font-black text-ios-red uppercase tracking-widest">
-            1 partido en vivo
-          </span>
+      {/* Live indicator — only when matches are live */}
+      {liveCount > 0 && (
+        <div className="px-5 mb-3">
+          <div
+            className="flex items-center gap-2 px-3 py-2 rounded-xl"
+            style={{ background: 'rgba(255,69,58,0.08)', border: '1px solid rgba(255,69,58,0.15)' }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-ios-red live-pulse" />
+            <span className="text-[10px] font-black text-ios-red uppercase tracking-widest">
+              {liveCount === 1 ? '1 partido en vivo' : `${liveCount} partidos en vivo`}
+            </span>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Nav */}
       <nav className="flex-1 px-3 flex flex-col gap-0.5">

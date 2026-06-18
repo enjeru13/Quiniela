@@ -1,6 +1,7 @@
 import { Trophy } from 'lucide-react'
 import Sidebar from './Sidebar'
 import BottomNav from './BottomNav'
+import PullToRefresh from './PullToRefresh'
 
 export default function Layout({ children }) {
   return (
@@ -12,6 +13,8 @@ export default function Layout({ children }) {
           <Trophy size={18} className="text-ios-orange" />
           <span className="font-bold tracking-tight text-sm">Quiniela Mundial 2026</span>
         </header>
+
+        <PullToRefresh />
 
         <main className="max-w-2xl lg:max-w-3xl mx-auto px-4 lg:px-8 pt-6 pb-28 lg:pb-12">
           {children}

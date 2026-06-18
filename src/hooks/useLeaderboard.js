@@ -1,20 +1,25 @@
-import { useState, useEffect } from 'react'
-import { supabase } from '../lib/supabase'
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "../lib/supabase";
 
 export function useLeaderboard() {
-  const [leaderboard, setLeaderboard] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetch = useCallback(async () => {
+    setLoading(true);
+    const { data, error: err } = await supabase
+      .from("leaderboard")
+      .select("*")
+      .order("rank");
+    setError(err ?? null);
+    setLeaderboard(data ?? []);
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
-    supabase
-      .from('leaderboard')
-      .select('*')
-      .order('rank')
-      .then(({ data }) => {
-        setLeaderboard(data ?? [])
-        setLoading(false)
-      })
-  }, [])
+    fetch();
+  }, [fetch]);
 
-  return { leaderboard, loading }
+  return { leaderboard, loading, error, refetch: fetch };
 }
