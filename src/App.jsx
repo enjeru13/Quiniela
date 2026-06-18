@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
 import { MatchesProvider } from './contexts/MatchesContext'
 import Layout from './components/layout/Layout'
@@ -24,11 +24,12 @@ function LoadingScreen() {
 
 function AppRoutes() {
   const { user, loading } = useAuth()
+  const location = useLocation()
 
   if (loading) return <LoadingScreen />
 
-  // Join route — works with or without auth (JoinLeague handles noauth state)
-  if (window.location.pathname.startsWith('/unirse')) {
+  // Join route — sin nav, maneja su propio estado de auth
+  if (location.pathname.startsWith('/unirse')) {
     return (
       <Routes>
         <Route path="/unirse/:code" element={<JoinLeague />} />
@@ -46,7 +47,6 @@ function AppRoutes() {
         <Route path="/eliminatorias" element={<Knockout />} />
         <Route path="/ranking" element={<Rankings />} />
         <Route path="/ligas" element={<Leagues />} />
-        <Route path="/unirse/:code" element={<JoinLeague />} />
       </Routes>
     </Layout>
   )
