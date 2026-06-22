@@ -9,6 +9,8 @@ import { useLeagues } from "../hooks/useLeagues";
 import { useAuth } from "../contexts/AuthContext";
 import { useMatches } from "../contexts/MatchesContext";
 import TeamFlag from "../components/matches/TeamFlag";
+import { getTeamInfo } from "../lib/teamMappings";
+import MyStatsCard from "../components/rankings/MyStatsCard";
 
 const MEDAL = {
   1: { color: "#ffd60a", bg: "rgba(255,214,0,0.10)", border: "rgba(255,214,0,0.22)", glow: "rgba(255,214,0,0.18)" },
@@ -119,6 +121,18 @@ function ListRow({ player, isLast, isMe }) {
           </div>
         </div>
       </div>
+      {player.champion_pick && (
+        <div className="flex flex-col items-center gap-0.5 shrink-0">
+          <TeamFlag
+            code={getTeamInfo(player.champion_pick).flag}
+            short={player.champion_pick}
+            size="xs"
+          />
+          {player.champion_points_awarded && (
+            <span className="text-[8px] font-black tabular-nums" style={{ color: '#ffd60a' }}>+10</span>
+          )}
+        </div>
+      )}
       <div className="text-center shrink-0 w-8">
         <p className="text-xs font-bold tabular-nums text-ios-label2">{player.predictions_count}</p>
         <p className="text-[8px] text-ios-label3 leading-none mt-0.5">pron</p>
@@ -139,6 +153,8 @@ function LeaderboardView({ data, myId }) {
   const meInTop3 = me && me.rank <= 3;
   return (
     <>
+      <MyStatsCard />
+
       {top3.some(Boolean) && (
         <div className="mb-6 relative">
           <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 100%, rgba(255,214,0,0.07) 0%, transparent 65%)" }} />

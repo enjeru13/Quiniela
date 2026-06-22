@@ -18,3 +18,18 @@ export async function getWCMatches() {
 export function invalidateCache() {
   _cache = null;
 }
+
+let _scorersCache = null;
+let _scorersCacheAt = 0;
+const SCORERS_TTL = 5 * 60_000;
+
+export async function getWCScorers(limit = 20) {
+  if (_scorersCache && Date.now() - _scorersCacheAt < SCORERS_TTL)
+    return _scorersCache;
+  const res = await fetch(`${BASE}/competitions/WC/scorers?limit=${limit}`);
+  if (!res.ok) throw new Error(`football-data.org ${res.status}`);
+  const { scorers } = await res.json();
+  _scorersCache = scorers ?? [];
+  _scorersCacheAt = Date.now();
+  return _scorersCache;
+}

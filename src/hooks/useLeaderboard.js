@@ -7,7 +7,6 @@ export function useLeaderboard() {
   const [error, setError] = useState(null);
 
   const fetch = useCallback(async () => {
-    setLoading(true);
     const { data, error: err } = await supabase
       .from("leaderboard")
       .select("*")
@@ -19,6 +18,24 @@ export function useLeaderboard() {
 
   useEffect(() => {
     fetch();
+
+    // Realtime — se dispara cuando cualquier profile actualiza total_points
+    const channel = supabase
+      .channel("leaderboard-realtime")
+      .on(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "profiles" },
+        () => { fetch(); },
+      )
+      .subscribe();
+
+    // Fallback polling cada 30s por si Realtime no está habilitado
+    const interval = setInterval(fetch, 30_000);
+
+    return () => {
+      supabase.removeChannel(channel);
+      clearInterval(interval);
+    };
   }, [fetch]);
 
   return { leaderboard, loading, error, refetch: fetch };

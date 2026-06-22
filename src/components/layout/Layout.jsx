@@ -2,8 +2,10 @@ import { Trophy } from 'lucide-react'
 import Sidebar from './Sidebar'
 import BottomNav from './BottomNav'
 import PullToRefresh from './PullToRefresh'
+import { useSyncPoints } from '../../hooks/useSyncPoints'
 
 export default function Layout({ children }) {
+  useSyncPoints()
   return (
     <div className="min-h-screen bg-ios-bg">
       <Sidebar />

@@ -4,6 +4,7 @@ export default function TeamFlag({ code, size = 'md', short }) {
   const [error, setError] = useState(false)
 
   const sizes = {
+    xs: 'w-5 h-3',
     sm: 'w-8 h-5',
     md: 'w-14 h-10',
     lg: 'w-20 h-14',

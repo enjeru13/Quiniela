@@ -3,10 +3,20 @@ import { useState, useEffect } from 'react'
 function calcMinuteFromKickoff(kickoffAt) {
   const elapsed = Math.floor((Date.now() - new Date(kickoffAt)) / 60_000)
   if (elapsed < 0) return null
-  if (elapsed <= 47) return elapsed           // first half
-  if (elapsed <= 60) return null              // half-time break (~15 min)
-  const secondHalf = elapsed - 60 + 45       // second half: 71-60+45=56 ✓
-  return Math.min(secondHalf, 97)
+
+  // First half: break at 22' (3 real min), then play resumes to 45'
+  if (elapsed < 22) return elapsed
+  if (elapsed < 25) return 22              // hydration break
+  if (elapsed < 70) return Math.min(elapsed - 3, 55)  // 22–45'+ added time
+
+  // Half-time (15 min, starts after 45'+ added time whistle)
+  if (elapsed < 85) return null
+
+  // Second half: same pattern offset, break at 67' (45+22)
+  const sh = elapsed - 85
+  if (sh < 22) return 45 + sh
+  if (sh < 25) return 67                   // hydration break
+  return Math.min(45 + sh - 3, 97)
 }
 
 export default function LiveBadge({ minute, kickoffAt, apiStatus }) {

@@ -79,22 +79,29 @@ export default function MatchCard({ match, prediction, onPredict }) {
                 <span className="text-[10px] text-ios-label3 font-medium">{formatTime(match.kickoff_at)}</span>
               </div>
             ) : (
-              <div className="flex items-center gap-1.5">
-                <span
-                  className={`text-[46px] font-black tabular-nums leading-none tracking-tighter ${
-                    homeWon ? 'text-white' : isDraw ? 'text-ios-label2' : 'text-ios-label3'
-                  }`}
-                >
-                  {match.home_score}
-                </span>
-                <span className="text-ios-label3 text-xl font-light mb-0.5">—</span>
-                <span
-                  className={`text-[46px] font-black tabular-nums leading-none tracking-tighter ${
-                    awayWon ? 'text-white' : isDraw ? 'text-ios-label2' : 'text-ios-label3'
-                  }`}
-                >
-                  {match.away_score}
-                </span>
+              <div className="flex flex-col items-center gap-0.5">
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={`text-[46px] font-black tabular-nums leading-none tracking-tighter ${
+                      homeWon ? 'text-white' : isDraw ? 'text-ios-label2' : 'text-ios-label3'
+                    }`}
+                  >
+                    {match.home_score}
+                  </span>
+                  <span className="text-ios-label3 text-xl font-light mb-0.5">—</span>
+                  <span
+                    className={`text-[46px] font-black tabular-nums leading-none tracking-tighter ${
+                      awayWon ? 'text-white' : isDraw ? 'text-ios-label2' : 'text-ios-label3'
+                    }`}
+                  >
+                    {match.away_score}
+                  </span>
+                </div>
+                {match.api_status === 'FINISHED' && match.half_time_home !== null && (
+                  <span className="text-[10px] text-ios-label3 font-medium tabular-nums">
+                    1T: {match.half_time_home}–{match.half_time_away}
+                  </span>
+                )}
               </div>
             )}
           </div>

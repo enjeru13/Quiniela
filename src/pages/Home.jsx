@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 import { useState, useMemo, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trophy, CheckCircle2, Clock, Radio } from "lucide-react";
+import { Trophy, CheckCircle2, Clock, Radio, Timer } from "lucide-react";
 import MatchCard from "../components/matches/MatchCard";
 import PredictionModal from "../components/predictions/PredictionModal";
+import ChampionCard from "../components/home/ChampionCard";
 import { useMatches } from "../contexts/MatchesContext";
 import { usePredictions } from "../hooks/usePredictions";
 import { groupMatchesByTime } from "../lib/utils";
@@ -12,7 +13,28 @@ import { es } from "date-fns/locale";
 
 const TOTAL_MATCHES = 104;
 
-function TournamentBanner({ played }) {
+const PHASE_PRIORITY = [
+  "Final",
+  "Tercer Puesto",
+  "Semifinal",
+  "Cuartos de Final",
+  "Octavos de Final",
+  "Ronda de 32",
+];
+
+function getCurrentPhase(matches) {
+  const active = new Set(
+    matches
+      .filter((m) => m.status === "live" || m.status === "finished")
+      .map((m) => m.stage),
+  );
+  for (const phase of PHASE_PRIORITY) {
+    if (active.has(phase)) return phase;
+  }
+  return "Grupos";
+}
+
+function TournamentBanner({ played, phase }) {
   const progress = Math.round((played / TOTAL_MATCHES) * 100);
   return (
     <div className="relative rounded-2xl overflow-hidden mb-5">
@@ -50,7 +72,7 @@ function TournamentBanner({ played }) {
             <p className="text-[10px] font-bold text-white/60 uppercase tracking-wider">
               Fase
             </p>
-            <p className="text-xs font-black text-white mt-0.5">Grupos</p>
+            <p className="text-xs font-black text-white mt-0.5">{phase}</p>
           </div>
         </div>
         <div
@@ -307,6 +329,49 @@ function TimeSlotHeader({ time, allFinished, allScheduled, count }) {
   );
 }
 
+function CountdownWidget({ matches }) {
+  const [now, setNow] = useState(() => new Date())
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 30_000)
+    return () => clearInterval(id)
+  }, [])
+
+  const hasLive = matches.some((m) => m.status === "live")
+
+  const next = useMemo(() => {
+    return matches
+      .filter((m) => m.status === "scheduled" && new Date(m.kickoff_at) > now)
+      .sort((a, b) => new Date(a.kickoff_at) - new Date(b.kickoff_at))[0] ?? null
+  }, [matches, now])
+
+  if (hasLive || !next) return null
+
+  const diff = Math.max(0, new Date(next.kickoff_at) - now)
+  const hours = Math.floor(diff / 3_600_000)
+  const mins  = Math.floor((diff % 3_600_000) / 60_000)
+  const timeStr = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-center gap-2.5 rounded-2xl px-4 py-3 mb-4"
+      style={{ background: "#1c1c1e" }}
+    >
+      <Timer size={13} className="text-ios-label3 shrink-0" />
+      <span className="text-xs text-ios-label2 flex-1 min-w-0 truncate">
+        <span className="font-bold text-white">{next.home_team.name}</span>
+        <span className="text-ios-label3"> vs </span>
+        <span className="font-bold text-white">{next.away_team.name}</span>
+      </span>
+      <span className="text-xs font-black tabular-nums shrink-0" style={{ color: "#0a84ff" }}>
+        {timeStr}
+      </span>
+    </motion.div>
+  )
+}
+
 function LoadingMatches() {
   return (
     <div className="flex flex-col gap-3">
@@ -381,6 +446,7 @@ export default function Home() {
   }, [defaultDate, selectedDate, matchesByDate]);
 
   const played = matches.filter((m) => m.status === "finished").length;
+  const phase = getCurrentPhase(matches);
   const dayMatches = matchesByDate[selectedDate] ?? [];
   const liveMatches = dayMatches.filter((m) => m.status === "live");
   const nonLive = dayMatches.filter((m) => m.status !== "live");
@@ -389,7 +455,11 @@ export default function Home() {
 
   return (
     <>
-      <TournamentBanner played={played} />
+      <TournamentBanner played={played} phase={phase} />
+
+      <ChampionCard matches={matches} />
+
+      <CountdownWidget matches={matches} />
 
       {error && (
         <div
