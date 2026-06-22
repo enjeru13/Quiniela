@@ -37,7 +37,7 @@ export default function UpdatePrompt() {
             </div>
 
             <button
-              onClick={() => updateServiceWorker(true)}
+              onClick={() => { updateServiceWorker(true); setTimeout(() => window.location.reload(), 500) }}
               className="shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-black text-white"
               style={{ background: '#0a84ff' }}
             >
