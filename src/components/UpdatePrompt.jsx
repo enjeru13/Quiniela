@@ -37,7 +37,16 @@ export default function UpdatePrompt() {
             </div>
 
             <button
-              onClick={() => { updateServiceWorker(true); setTimeout(() => window.location.reload(), 500) }}
+              onClick={async () => {
+                try {
+                  const keys = await caches.keys()
+                  await Promise.all(keys.map((k) => caches.delete(k)))
+                  const regs = await navigator.serviceWorker.getRegistrations()
+                  await Promise.all(regs.map((r) => r.unregister()))
+                } finally {
+                  window.location.reload()
+                }
+              }}
               className="shrink-0 px-3 py-1.5 rounded-xl text-[11px] font-black text-white"
               style={{ background: '#0a84ff' }}
             >
