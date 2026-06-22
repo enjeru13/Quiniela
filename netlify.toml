@@ -8,6 +8,9 @@
 [functions]
   directory = "netlify/functions"
 
+[functions."check-matches"]
+  schedule = "*/15 * * * *"
+
 # Proxy football-data.org — adds API key server-side
 [[redirects]]
   from = "/api/fd/*"

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Flame, Target, ChevronRight } from 'lucide-react'
+import { Flame, Target, ChevronRight, Bell, BellOff } from 'lucide-react'
 import { useMyStats } from '../../hooks/useMyStats'
+import { usePushNotifications } from '../../hooks/usePushNotifications'
 import BetHistorySheet from './BetHistorySheet'
 
 function StatPill({ value, label, color = '#aeaeb2', highlight = false }) {
@@ -25,6 +26,7 @@ function StatPill({ value, label, color = '#aeaeb2', highlight = false }) {
 
 export default function MyStatsCard() {
   const { stats, loading } = useMyStats()
+  const { subscribed, loading: pushLoading, supported, subscribe, unsubscribe } = usePushNotifications()
   const [sheetOpen, setSheetOpen] = useState(false)
 
   if (loading || !stats) return null
@@ -46,6 +48,25 @@ export default function MyStatsCard() {
           <span className="text-[10px] font-black text-ios-label3 uppercase tracking-[0.12em]">
             Mi rendimiento
           </span>
+          {supported && (
+            <button
+              onClick={subscribed ? unsubscribe : subscribe}
+              disabled={pushLoading}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl transition-all"
+              style={subscribed
+                ? { background: 'rgba(48,209,88,0.12)', color: '#30d158' }
+                : { background: 'rgba(255,255,255,0.06)', color: '#636366' }
+              }
+            >
+              {subscribed
+                ? <Bell size={11} />
+                : <BellOff size={11} />
+              }
+              <span className="text-[10px] font-bold">
+                {subscribed ? 'Notif. activas' : 'Activar notif.'}
+              </span>
+            </button>
+          )}
           <div className="flex items-center gap-3">
             {stats.streak > 1 && (
               <div className="flex items-center gap-1">

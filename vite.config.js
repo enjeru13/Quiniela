@@ -28,28 +28,11 @@ export default defineConfig(({ mode }) => {
             { src: "logo.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
           ],
         },
-        workbox: {
+        strategies: "injectManifest",
+        srcDir: "src",
+        filename: "sw.js",
+        injectManifest: {
           globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2}"],
-          runtimeCaching: [
-            {
-              urlPattern: /^https:\/\/flagcdn\.com\//,
-              handler: "CacheFirst",
-              options: {
-                cacheName: "flags",
-                expiration: { maxEntries: 60, maxAgeSeconds: 604800 },
-                cacheableResponse: { statuses: [0, 200] },
-              },
-            },
-            {
-              urlPattern: /^https:\/\/.*\.supabase\.co\//,
-              handler: "NetworkFirst",
-              options: {
-                cacheName: "supabase",
-                networkTimeoutSeconds: 10,
-                cacheableResponse: { statuses: [0, 200] },
-              },
-            },
-          ],
         },
       }),
     ],
