@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/immutability */
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase";
 
 const AuthContext = createContext(null);
@@ -9,8 +9,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [recoveryMode, setRecoveryMode] = useState(false);
-  const pendingResetRef = useRef(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -22,15 +20,6 @@ export function AuthProvider({ children }) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (_event === 'PASSWORD_RECOVERY') {
-        setUser(session?.user ?? null);
-        setRecoveryMode(true);
-        setLoading(false);
-        return;
-      }
-      // Block normal sign-in processing during OTP reset flow
-      if (_event === 'SIGNED_IN' && pendingResetRef.current) return;
-
       setUser(session?.user ?? null);
       if (session?.user) fetchProfile(session.user.id, session.user);
       else {
@@ -84,18 +73,9 @@ export function AuthProvider({ children }) {
     await supabase.auth.signOut();
   }
 
-  async function updatePassword(newPassword) {
-    const { error } = await supabase.auth.updateUser({ password: newPassword });
-    if (!error) setRecoveryMode(false);
-    return { error };
-  }
-
-  const startOtpReset = () => { pendingResetRef.current = true; };
-  const endOtpReset   = () => { pendingResetRef.current = false; };
-
   return (
     <AuthContext.Provider
-      value={{ user, profile, loading, recoveryMode, signIn, signUp, signOut, updatePassword, startOtpReset, endOtpReset }}
+      value={{ user, profile, loading, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>
