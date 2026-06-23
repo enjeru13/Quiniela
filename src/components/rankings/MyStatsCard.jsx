@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Flame, Target, ChevronRight, Bell, BellOff } from 'lucide-react'
+import { Flame, Target, ChevronRight, Bell, BellOff, KeyRound } from 'lucide-react'
 import { useMyStats } from '../../hooks/useMyStats'
 import { usePushNotifications } from '../../hooks/usePushNotifications'
 import BetHistorySheet from './BetHistorySheet'
+import ChangePasswordSheet from './ChangePasswordSheet'
 
 function StatPill({ value, label, color = '#aeaeb2', highlight = false }) {
   return (
@@ -28,6 +29,7 @@ export default function MyStatsCard() {
   const { stats, loading } = useMyStats()
   const { subscribed, loading: pushLoading, supported, subscribe, unsubscribe } = usePushNotifications()
   const [sheetOpen, setSheetOpen] = useState(false)
+  const [passSheetOpen, setPassSheetOpen] = useState(false)
 
   if (loading || !stats) return null
   if (stats.total === 0 && stats.pending === 0) return null
@@ -104,9 +106,19 @@ export default function MyStatsCard() {
             <ChevronRight size={12} className="text-ios-blue" />
           </div>
         </button>
+
+        {/* Cambiar contraseña */}
+        <button
+          onClick={() => setPassSheetOpen(true)}
+          className="flex items-center gap-1.5 w-full mt-2 pt-2 border-t border-ios-border/20"
+        >
+          <KeyRound size={10} style={{ color: '#636366' }} />
+          <span className="text-[11px]" style={{ color: '#636366' }}>Cambiar contraseña</span>
+        </button>
       </div>
 
       <BetHistorySheet open={sheetOpen} onClose={() => setSheetOpen(false)} />
+      <ChangePasswordSheet open={passSheetOpen} onClose={() => setPassSheetOpen(false)} />
     </motion.div>
   )
 }
